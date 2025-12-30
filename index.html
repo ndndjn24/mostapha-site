@@ -1,68 +1,290 @@
-<script>
-  const azkar = [
-    "اللهم ارفع درجاته ",
-    "اللهم اغفر له ",
-    "اللهم اجعل قبره روضة من رياض الجنة",
-    "اللهم افسح له في قبره مد بصره",
-    "اللهم اجمعنا به في الفردوس الأعلى",
-    "اللهم أنر له قبره بنورك",
-    "اللهم اجعله من الذين لا خوف عليهم ولا هم يحزنون",
-    "اللهم بشره بروح وريحان ورب راضٍ غير غضبان",
-  ];
-
-  // مصفوفة لتخزين قيم العدادات برمجياً
-  let countersData = [];
-
-  function createZekrBox(text, index) {
-    const box = document.createElement("div");
-    box.className = "zekr-box";
-
-    // نبدأ العداد من الصفر في المصفوفة
-    countersData[index] = 0;
-
-    const counterCircle = document.createElement("div");
-    counterCircle.className = "counter-circle";
-    counterCircle.id = "counter-" + index; // نعطي كل دائرة ID فريد
-    counterCircle.textContent = 0;
-
-    const zekrText = document.createElement("p");
-    zekrText.textContent = text;
-
-    box.appendChild(counterCircle);
-    box.appendChild(zekrText);
-
-    box.addEventListener("click", () => {
-      countersData[index]++; // نزيد القيمة في المصفوفة
-      counterCircle.textContent = countersData[index]; // نحدث الشاشة من المصفوفة
-    });
-
-    return box;
-  }
-
-  const container = document.getElementById("azkar-container");
-
-  azkar.forEach((zekr, index) => {
-    const box = createZekrBox(zekr, index);
-    container.appendChild(box);
-  });
-
-  function resetAllCounters() {
-    // 1. تصفير القيم في المصفوفة (الذاكرة)
-    for (let i = 0; i < countersData.length; i++) {
-      countersData[i] = 0;
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>استغفار لروح مصطفى بوشيخي</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #fefcea, #f1da36);
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
     }
-    
-    // 2. تصفير النصوص الظاهرة في الواجهة (الشاشة)
-    const counters = document.querySelectorAll(".counter-circle");
-    counters.forEach(c => c.textContent = 0);
-  }
 
-  function copyLink() {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      document.getElementById("share-status").textContent = "تم نسخ الرابط!";
-      setTimeout(() => {
-        document.getElementById("share-status").textContent = "";
-      }, 3000); // يختفي النص بعد 3 ثواني
-    });
-  }
-</script>
+    header {
+      background-color: #ffffffc2;
+      padding: 20px 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #2c3e50;
+    }
+
+    .subheading {
+      font-size: 18px;
+      margin-top: 5px;
+      color: #555;
+    }
+
+    .duaa {
+      background-color: #ffffffd0;
+      margin: 30px 20px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #e0c93590;
+      font-family: 'Amiri', serif;
+      line-height: 1.8;
+      font-size: 20px;
+      color: #000;
+    }
+
+    .zekr-box {
+      background: #ffffffcc;
+      margin: 15px 20px;
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px #e0c93580;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      /* منع تحديد النص عند النقر السريع */
+      user-select: none; 
+      -webkit-user-select: none;
+    }
+
+    .zekr-box:active {
+      transform: scale(0.98);
+      background-color: #fff9db;
+    }
+
+    .counter-circle {
+      background-color: #fde3a7;
+      width: 70px;
+      height: 70px;
+      line-height: 70px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      font-size: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .reset-btn {
+      background-color: #c0392b;
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 16px;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .reset-btn:hover {
+      background-color: #a93226;
+    }
+
+    .duaa-ending {
+      background-color: #fff0dc;
+      margin: 40px 20px 0;
+      padding: 20px;
+      border-radius: 12px;
+      font-family: 'Amiri', serif;
+      font-size: 18px;
+    }
+
+    .share-section {
+      margin: 40px 0 20px;
+    }
+
+    .share-btn {
+      font-size: 16px;
+      padding: 10px 20px;
+      background-color: #2980b9;
+      border-radius: 8px;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .share-btn:hover {
+      background-color: #216a94;
+    }
+
+    #share-status {
+      font-size: 14px;
+      color: #2d862d;
+      margin-top: 10px;
+      font-weight: bold;
+      min-height: 20px;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 15px;
+      font-size: 14px;
+      color: #777;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 24px; }
+      .duaa { font-size: 18px; }
+      .reset-btn, .share-btn { font-size: 14px; padding: 10px 20px; }
+      .counter-circle { width: 60px; height: 60px; line-height: 60px; font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>استغفار لروح مصطفى بوشيخي</h1>
+    <div class="subheading">اجعلها صدقة جارية له، وادعُ له بالرحمة</div>
+  </header>
+
+  <div class="duaa">
+    <p>اللهم اغفر لعبدك مصطفى بوشيخي، وارحمه، وعافه، واعفُ عنه، وأكرم نزله، ووسع مدخله، واغسله بالماء والثلج والبرد، ونقه من الذنوب والخطايا كما ينقّى الثوب الأبيض من الدنس.</p>
+    <p>اللهم اجعل قبره روضة من رياض الجنة، ونوّر له فيه، وثبّته عند السؤال.</p>
+    <p>قال رسول الله صلى الله عليه وسلم: <br> <strong>"إذا مات ابن آدم انقطع عمله إلا من ثلاث: صدقة جارية، أو علم يُنتفع به، أو ولد صالح يدعو له."</strong></p>
+  </div>
+
+  <div id="azkar-container"></div>
+
+  <button class="reset-btn" onclick="resetAllCounters()">إعادة جميع العدادات إلى الصفر</button>
+
+  <div class="duaa-ending">
+    <p>اللهم اجعل كل من استغفر ودعا له سببًا لرفع درجاته في الجنة، واجمعنا به في مستقر رحمتك.</p>
+  </div>
+
+  <div class="share-section">
+    <button class="share-btn" onclick="copyLink()">مشاركة الرابط مع الأصدقاء</button>
+    <div id="share-status"></div>
+  </div>
+
+  <footer>
+    هذا الموقع صدقة جارية لروح المرحوم مصطفى بوشيخي، فساهم بالاستغفار له.
+  </footer>
+
+  <script>
+    const azkar = [
+      "اللهم ارفع درجاته",
+      "اللهم اغفر له",
+      "اللهم اجعل قبره روضة من رياض الجنة",
+      "اللهم افسح له في قبره مد بصره",
+      "اللهم اجمعنا به في الفردوس الأعلى",
+      "اللهم أنر له قبره بنورك",
+      "اللهم اجعله من الذين لا خوف عليهم ولا هم يحزنون",
+      "اللهم بشره بروح وريحان ورب راضٍ غير غضبان",
+    ];
+
+    function createZekrBox(text) {
+      const box = document.createElement("div");
+      box.className = "zekr-box";
+
+      const counterCircle = document.createElement("div");
+      counterCircle.className = "counter-circle";
+      
+      // هنا الحل: نخزن الرقم داخل العنصر نفسه باستخدام data-count
+      // نبدأ بـ 0
+      counterCircle.setAttribute('data-count', '0');
+      counterCircle.textContent = '0';
+
+      const zekrText = document.createElement("p");
+      zekrText.textContent = text;
+
+      box.appendChild(counterCircle);
+      box.appendChild(zekrText);
+
+      // إضافة حدث النقر
+      box.addEventListener("click", () => {
+        // 1. نقرأ الرقم الحالي المخزن
+        let currentCount = parseInt(counterCircle.getAttribute('data-count'));
+        
+        // 2. نزيد الرقم
+        currentCount++;
+        
+        // 3. نحفظ الرقم الجديد في الذاكرة (data-count) وفي الشاشة (textContent)
+        counterCircle.setAttribute('data-count', currentCount);
+        counterCircle.textContent = currentCount;
+        
+        // تأثير بصري بسيط عند النقر (تغيير لون الدائرة لحظياً)
+        counterCircle.style.backgroundColor = "#fff";
+        setTimeout(() => {
+            counterCircle.style.backgroundColor = "#fde3a7";
+        }, 100);
+      });
+
+      return box;
+    }
+
+    // بناء العناصر في الصفحة
+    const container = document.getElementById("azkar-container");
+    if (container) {
+        azkar.forEach((zekr) => {
+          const box = createZekrBox(zekr);
+          container.appendChild(box);
+        });
+    }
+
+    // دالة تصفير العدادات - الحل الجذري
+    function resetAllCounters() {
+      const counters = document.querySelectorAll(".counter-circle");
+      
+      counters.forEach(circle => {
+        // نصفر الشاشة
+        circle.textContent = '0';
+        // نصفر القيمة المخزنة داخل العنصر حتى يبدأ من جديد بشكل صحيح
+        circle.setAttribute('data-count', '0');
+      });
+    }
+
+    // دالة نسخ الرابط
+    function copyLink() {
+      const url = window.location.href;
+      
+      // محاولة النسخ للطرق الحديثة والقديمة
+      if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(() => {
+            showShareStatus();
+          }).catch(err => {
+            console.error('فشل النسخ', err);
+            fallbackCopyTextToClipboard(url);
+          });
+      } else {
+          fallbackCopyTextToClipboard(url);
+      }
+    }
+
+    function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try {
+            var successful = document.execCommand('copy');
+            if(successful) showShareStatus();
+        } catch (err) {
+            console.error('فشل النسخ البديل', err);
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function showShareStatus() {
+        const statusDiv = document.getElementById("share-status");
+        statusDiv.textContent = "تم نسخ الرابط! انشره للأجر";
+        setTimeout(() => {
+            statusDiv.textContent = "";
+        }, 4000);
+    }
+  </script>
+
+</body>
+</html>
